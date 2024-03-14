@@ -1,0 +1,75 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Ping Monitor</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div id="ping-containers"></div>
+    <button id="add-new">ADD NEW</button>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", async () => {
+        const containers = document.getElementById("ping-containers");
+
+        const addPingContainer = (ip, name) => {
+          const container = document.createElement("div");
+          container.className = "ping-container";
+          container.innerHTML = `
+          <h1 contenteditable="true">${ip}</h1>
+          <h2 contenteditable="true">${name}</h2>
+          <pre class="ping-output"></pre>
+          <button class="delete-ping">DELETE</button>
+        `;
+          containers.appendChild(container);
+
+          const ipElement = container.querySelector("h1");
+          const nameElement = container.querySelector("h2");
+          const deleteButton = container.querySelector(".delete-ping");
+
+          ipElement.addEventListener("blur", () => {
+            window.electronAPI.pingHost(ipElement.textContent);
+            saveConfiguration();
+          });
+          nameElement.addEventListener("blur", saveConfiguration);
+
+          deleteButton.addEventListener("click", () => {
+            container.remove();
+            saveConfiguration();
+          });
+
+          window.electronAPI.pingHost(ip);
+
+          window.electronAPI.receivePing((event, data) => {
+            if (data.ip === ip) {
+              const outputElement = container.querySelector(".ping-output");
+              outputElement.textContent = data.result + "\n";
+              outputElement.scrollTop = outputElement.scrollHeight;
+            }
+          });
+        };
+
+        const saveConfiguration = () => {
+          const config = Array.from(
+            document.querySelectorAll(".ping-container")
+          ).map((container) => {
+            return {
+              ip: container.querySelector("h1").textContent,
+              name: container.querySelector("h2").textContent,
+            };
+          });
+          window.electronAPI.saveConfiguration(config);
+        };
+
+        const config = await window.electronAPI.getConfiguration();
+        if (config && config.length) {
+          config.forEach(({ ip, name }) => addPingContainer(ip, name));
+        }
+
+        document.getElementById("add-new").addEventListener("click", () => {
+          addPingContainer("Nuevo IP", "Nuevo Nombre");
+        });
+      });
+    </script>
+  </body>
+</html>
