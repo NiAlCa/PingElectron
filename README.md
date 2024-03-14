@@ -1,6 +1,6 @@
 # PingAlmacenes
 
-PingAlmacenes is an Electron-based desktop application for monitoring the ping to different warehouses. This tool is useful for keeping track of the network connection status of multiple warehouse locations in real-time.
+PingElectron is an Electron-based desktop application for monitoring the ping to different warehouses. This tool is useful for keeping track of the network connection status of multiple warehouse locations in real-time.
 
 ## Features
 
@@ -24,7 +24,7 @@ To run PingAlmacenes on your local system, follow these steps:
 
     ```bash
     git clone https://github.com/yourGitHubUsername/pingalmacenes.git
-    cd pingalmacenes
+    cd PingElectron
     ```
 
 2. Install the required dependencies:
