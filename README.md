@@ -1,3 +1,6 @@
+[![Nombre del Video](http://img.youtube.com/vi/CZe-GORKI6Q/0.jpg)](https://youtu.be/CZe-GORKI6Q "Nombre del Video")
+
+
 # PingAlmacenes
 
 PingElectron is an Electron-based desktop application for monitoring the ping to different warehouses. This tool is useful for keeping track of the network connection status of multiple warehouse locations in real-time.
